@@ -16,7 +16,8 @@ steps:
   args: ['build', '-t', 'gcr.io/hip-ether-442617-p9/go-microservice','.']
 - name: "gcr.io/cloud-builders/docker"
   args: ['push', 'gcr.io/hip-ether-442617-p9/go-microservice']
-  
+
+
 - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
   entrypoint: gcloud
   args: ['run', 'deploy','go-microservice', '--image','gcr.io/Ahip-ether-442617-p9/go-microservice', '--region','us-central1', '--add-cloudsql-instances', 'hip-ether-442617-p9:us-central1:mypostgres','--platform','managed', '--port','8080', '--allow-unauthenticated']
