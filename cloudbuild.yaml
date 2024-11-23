@@ -21,6 +21,8 @@ steps:
   entrypoint: gcloud
   args: ['run', 'deploy','go-microservice', '--image','gcr.io/Ahip-ether-442617-p9/go-microservice', '--region','us-central1', '--add-cloudsql-instances', 'hip-ether-442617-p9:us-central1:mypostgres','--platform','managed', '--port','8080', '--allow-unauthenticated']
 
+logsBucket: gs://hip-ether-442617-p9
+
 images:
 - gcr.io/hip-ether-442617-p9/go-microservice
 - gcr.io/hip-ether-442617-p9/pgadmin
