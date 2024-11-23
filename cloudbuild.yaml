@@ -23,6 +23,7 @@ steps:
 
 logsBucket: gs://hip-ether-442617-p9
 
+
 images:
 - gcr.io/hip-ether-442617-p9/go-microservice
 - gcr.io/hip-ether-442617-p9/pgadmin
