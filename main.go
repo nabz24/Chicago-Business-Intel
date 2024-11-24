@@ -1490,7 +1490,8 @@ func GetZipData(db *sql.DB) {
 	io.WriteString(os.Stdout, s)
 
 	for i := 0; i < len(zip_data_list); i++ {
-		fmt.Println(zip_data_list[i].The_geom)
+		fmt.Println("heheheh")
+		//fmt.Println(zip_data_list[i].The_geom)
 		the_geom := zip_data_list[i].The_geom
 		object_id := zip_data_list[i].Objectid
 		zip := zip_data_list[i].Zip
