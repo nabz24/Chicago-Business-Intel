@@ -300,7 +300,7 @@ func main() {
 
 		go GetCommunityAreaUnemployment(db)
 		go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
+		//go GetTaxiTrips(db)
 
 		go GetCovidDetails(db)
 		go GetCCVIDetails(db)
