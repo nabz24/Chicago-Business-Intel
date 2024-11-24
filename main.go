@@ -1443,6 +1443,6 @@ func GetNeighborhood(db *sql.DB) {
 	}
 
 	fmt.Println("Received data from SODA REST API for Covid CCVI")
-	fmt.Println(res)
+	fmt.Println(res.Body)
 	//body, _ := ioutil.ReadAll(res.Body)
 }
