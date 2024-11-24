@@ -212,11 +212,11 @@ type ZipData []struct {
 }
 
 type NeighborhoodData []struct {
-	The_geom   json   `json:"the_geom"`
-	Pri_neigh  string `json:"pri_neigh"`
-	Sec_neigh  string `json:"sec_neigh"`
-	Shape_area string `json:"shape_area"`
-	Shape_len  string `json:"shape_len"`
+	The_geom   json.RawMessage `json:"the_geom"`
+	Pri_neigh  string          `json:"pri_neigh"`
+	Sec_neigh  string          `json:"sec_neigh"`
+	Shape_area string          `json:"shape_area"`
+	Shape_len  string          `json:"shape_len"`
 }
 
 // Declare my database connection
@@ -1490,8 +1490,6 @@ func GetZipData(db *sql.DB) {
 	io.WriteString(os.Stdout, s)
 
 	for i := 0; i < len(zip_data_list); i++ {
-		fmt.Println("heheheh")
-		//fmt.Println(zip_data_list[i].The_geom)
 		the_geom := zip_data_list[i].The_geom
 		object_id := zip_data_list[i].Objectid
 		zip := zip_data_list[i].Zip
