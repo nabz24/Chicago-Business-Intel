@@ -859,7 +859,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json"
+	var url = "https://data.cityofchicago.org/resource/ydr8-5enu.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -1606,39 +1606,39 @@ func GetNeighborhoodData(db *sql.DB) {
 }
 
 // for scheduling but not used
-func scheduleDataCollection(db *sql.DB) {
-	go func() {
-		for {
-			GetTaxiTrips(db)
-			time.Sleep(24 * time.Hour)
-		}
-	}()
-
-	go func() {
-		for {
-			GetCommunityAreaUnemployment(db)
-			time.Sleep(7 * 24 * time.Hour) // Only collect weekly
-		}
-	}()
-
-	go func() {
-		for {
-			GetBuildingPermits(db)
-			time.Sleep(24 * time.Hour)
-		}
-	}()
-
-	go func() {
-		for {
-			GetCovidDetails(db)
-			time.Sleep(24 * time.Hour)
-		}
-	}()
-
-	go func() {
-		for {
-			GetCCVIDetails(db)
-			time.Sleep(24 * time.Hour)
-		}
-	}()
-}
+//func scheduleDataCollection(db *sql.DB) {
+//	go func() {
+//		for {
+//			GetTaxiTrips(db)
+//			time.Sleep(24 * time.Hour)
+//		}
+//	}()
+//
+//	go func() {
+//		for {
+//			GetCommunityAreaUnemployment(db)
+//			time.Sleep(7 * 24 * time.Hour) // Only collect weekly
+//		}
+//	}()
+//
+//	go func() {
+//		for {
+//			GetBuildingPermits(db)
+//			time.Sleep(24 * time.Hour)
+//		}
+//	}()
+//
+//	go func() {
+//		for {
+//			GetCovidDetails(db)
+//			time.Sleep(24 * time.Hour)
+//		}
+//	}()
+//
+//	go func() {
+//		for {
+//			GetCCVIDetails(db)
+//			time.Sleep(24 * time.Hour)
+//		}
+//	}()
+//}
