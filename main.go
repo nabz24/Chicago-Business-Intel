@@ -203,6 +203,22 @@ type CCVIJsonRecords []struct {
 	Rank_covid_19_crude_mortality_rate    string `json:"rank_covid_19_crude_mortality_rate"`
 }
 
+type ZipData []struct {
+	The_geom   string `json:"the_geom"`
+	Objectid   string `json:"objectid"`
+	Zip        string `json:"zip"`
+	Shape_area string `json:"shape_area"`
+	Shape_len  string `json:"shape_len"`
+}
+
+type NeighborhoodData []struct {
+	The_geom   string `json:"the_geom"`
+	Pri_neigh  string `json:"pri_neigh"`
+	Sec_neigh  string `json:"sec_neigh"`
+	Shape_area string `json:"shape_area"`
+	Shape_len  string `json:"shape_len"`
+}
+
 // Declare my database connection
 var db *sql.DB
 
@@ -289,7 +305,8 @@ func main() {
 		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
 
-		go GetNeighborhood(db)
+		go GetZipData(db)
+		go GetNeighborhoodData(db)
 
 		http.HandleFunc("/", handler)
 
@@ -1425,9 +1442,31 @@ func GetCCVIDetails(db *sql.DB) {
 
 }
 
-func GetNeighborhood(db *sql.DB) {
+func GetZipData(db *sql.DB) {
 
-	var url = "https://data.cityofchicago.org/api/views/y6yq-dbs2/rows.json?accessType=DOWNLOAD"
+	drop_table := `drop table if exists zip_info`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "zip_info" (
+						"id"   SERIAL , 
+						"the_geom" TEXT, 
+						"object_id" VARCHAR(255), 
+						"zip" VARCHAR(255),  
+						"shape_area"      VARCHAR(255), 
+						"shape_len"      VARCHAR(255)
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for zip_data")
+
+	var url = "https://data.cityofchicago.org/resource/unjd-c2ca.json?$limit=50"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -1442,7 +1481,125 @@ func GetNeighborhood(db *sql.DB) {
 		panic(err)
 	}
 
-	fmt.Println("Received data from SODA REST API for Covid CCVI")
-	fmt.Println(res.Body)
-	//body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("Received data from SODA REST API for Zip Data")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var zip_data_list ZipData
+	json.Unmarshal(body, &zip_data_list)
+	s := fmt.Sprintf("\n\n ZipData: number of SODA records received = %d\n\n", len(zip_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(zip_data_list); i++ {
+
+		the_geom := zip_data_list[i].The_geom
+		object_id := zip_data_list[i].Objectid
+		zip := zip_data_list[i].Zip
+		shape_area := zip_data_list[i].Shape_area
+		shape_len := zip_data_list[i].Shape_len
+
+		sql := `INSERT INTO zip_info ( 
+						"the_geom", 
+						"object_id", 
+						"zip",  
+						"shape_area", 
+						"shape_len"
+	)
+	values($1, $2, $3, $4, $5)`
+
+		_, err = db.Exec(
+			sql,
+			the_geom,
+			object_id,
+			zip,
+			shape_area,
+			shape_len)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	fmt.Println("Completed Inserting Data into zip_data table")
+}
+
+func GetNeighborhoodData(db *sql.DB) {
+
+	drop_table := `drop table if exists neighborhood_info`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "neighborhood_info" (
+						"id"   SERIAL , 
+						"the_geom" TEXT, 
+						"object_id" VARCHAR(255), 
+						"zip" VARCHAR(255),  
+						"shape_area"      VARCHAR(255), 
+						"shape_len"      VARCHAR(255)
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for neighborhood_info")
+
+	var url = "https://data.cityofchicago.org/resource/y6yq-dbs2.json?$limit=50"
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for neighborhood Data")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var neighborhood_data_list NeighborhoodData
+	json.Unmarshal(body, &neighborhood_data_list)
+	s := fmt.Sprintf("\n\n Neighborhood: number of SODA records received = %d\n\n", len(neighborhood_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(neighborhood_data_list); i++ {
+
+		the_geom := neighborhood_data_list[i].The_geom
+		pri_neigh := neighborhood_data_list[i].Pri_neigh
+		sec_neigh := neighborhood_data_list[i].Sec_neigh
+		shape_area := neighborhood_data_list[i].Shape_area
+		shape_len := neighborhood_data_list[i].Shape_len
+
+		sql := `INSERT INTO neighborhood_info ( 
+						"the_geom", 
+						"pri_neigh", 
+						"sec_neigh",  
+						"shape_area", 
+						"shape_len"
+	)
+	values($1, $2, $3, $4, $5)`
+
+		_, err = db.Exec(
+			sql,
+			the_geom,
+			pri_neigh,
+			sec_neigh,
+			shape_area,
+			shape_len)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	fmt.Println("Completed Inserting Data into neighborhood table")
 }
