@@ -1253,7 +1253,7 @@ func GetCCVIDetails(db *sql.DB) {
 
 	body, _ := ioutil.ReadAll(res.Body)
 	var cciv_data_list CCVIJsonRecords
-	fmt.Println(cciv_data_list)
+	fmt.Println(body)
 	json.Unmarshal(body, &cciv_data_list)
 
 	s := fmt.Sprintf("\n\n Covid CCVI: number of SODA records received = %d\n\n", len(cciv_data_list))
