@@ -79,6 +79,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"reflect"
 	"strconv"
 	"time"
 
@@ -1266,7 +1267,9 @@ func GetCCVIDetails(db *sql.DB) {
 		ccvi_category := cciv_data_list[i].CCVI_category
 		rank_socioeconomic_status := cciv_data_list[i].rank_socioeconomic_status
 		rank_household_composition := cciv_data_list[i].rank_household_composition
-		fmt.Println(rank_socioeconomic_status)
+		fmt.Println("hello")
+		fmt.Println(cciv_data_list[i].rank_socioeconomic_status)
+		fmt.Println(reflect.TypeOf(cciv_data_list[i].rank_socioeconomic_status))
 		rank_adults_no_pcp := cciv_data_list[i].rank_adults_no_pcp
 		rank_cumulative_mobility_ratio := cciv_data_list[i].rank_cumulative_mobility_ratio
 		rank_frontline_essential_workers := cciv_data_list[i].rank_frontline_essential_workers
