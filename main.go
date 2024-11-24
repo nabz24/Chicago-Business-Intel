@@ -858,19 +858,12 @@ func GetBuildingPermits(db *sql.DB) {
 
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=1000"
+	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=999"
 
 	tr := &http.Transport{
-		MaxIdleConns:          10,
-		IdleConnTimeout:       1000 * time.Second,
-		TLSHandshakeTimeout:   1000 * time.Second,
-		ExpectContinueTimeout: 1000 * time.Second,
-		DisableCompression:    true,
-		Dial: (&net.Dialer{
-			Timeout:   1000 * time.Second,
-			KeepAlive: 1000 * time.Second,
-		}).Dial,
-		ResponseHeaderTimeout: 1000 * time.Second,
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
 	}
 
 	client := &http.Client{Transport: tr}
