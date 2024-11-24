@@ -1214,7 +1214,7 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 	}
-	fmt.Println('Count')
+	fmt.Println("Count: ", co)
 	fmt.Println(co)
 	fmt.Println("Completed Inserting Rows into the Building Permits Table")
 }
