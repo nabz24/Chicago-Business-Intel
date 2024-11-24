@@ -204,11 +204,11 @@ type CCVIJsonRecords []struct {
 }
 
 type ZipData []struct {
-	The_geom   string `json:"the_geom"`
-	Objectid   string `json:"objectid"`
-	Zip        string `json:"zip"`
-	Shape_area string `json:"shape_area"`
-	Shape_len  string `json:"shape_len"`
+	The_geom   json.RawMessage `json:"the_geom"`
+	Objectid   string          `json:"objectid"`
+	Zip        string          `json:"zip"`
+	Shape_area string          `json:"shape_area"`
+	Shape_len  string          `json:"shape_len"`
 }
 
 type NeighborhoodData []struct {
@@ -305,8 +305,8 @@ func main() {
 		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
 
-		go GetZipData(db)
-		go GetNeighborhoodData(db)
+		//go GetZipData(db)
+		//go GetNeighborhoodData(db)
 
 		http.HandleFunc("/", handler)
 
@@ -327,6 +327,11 @@ func main() {
 		}
 
 		time.Sleep(24 * time.Hour)
+	}
+
+	for {
+		fmt.Println("Hello")
+		time.Sleep(30 * time.Second)
 	}
 
 }
@@ -1490,7 +1495,7 @@ func GetZipData(db *sql.DB) {
 	io.WriteString(os.Stdout, s)
 
 	for i := 0; i < len(zip_data_list); i++ {
-		the_geom := zip_data_list[i].The_geom
+		the_geom := string(zip_data_list[i].The_geom)
 		object_id := zip_data_list[i].Objectid
 		zip := zip_data_list[i].Zip
 		shape_area := zip_data_list[i].Shape_area
