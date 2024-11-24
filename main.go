@@ -1452,7 +1452,7 @@ func GetZipData(db *sql.DB) {
 
 	create_table := `CREATE TABLE IF NOT EXISTS "zip_info" (
 						"id"   SERIAL , 
-						"the_geom" TEXT, 
+						"the_geom" VARCHAR, 
 						"object_id" VARCHAR(255), 
 						"zip" VARCHAR(255),  
 						"shape_area"      VARCHAR(255), 
@@ -1533,7 +1533,7 @@ func GetNeighborhoodData(db *sql.DB) {
 
 	create_table := `CREATE TABLE IF NOT EXISTS "neighborhood_info" (
 						"id"   SERIAL , 
-						"the_geom" TEXT, 
+						"the_geom" VARCHAR, 
 						"pri_neigh" VARCHAR(255), 
 						"sec_neigh" VARCHAR(255),  
 						"shape_area"      VARCHAR(255), 
