@@ -392,6 +392,7 @@ func GetTaxiTrips(db *sql.DB) {
 	fmt.Println("Received data from SODA REST API for Taxi Trips")
 
 	body_1, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("Printing body 1")
 	var taxi_trips_list_1 TaxiTripsJsonRecords
 	json.Unmarshal(body_1, &taxi_trips_list_1)
 
@@ -407,6 +408,7 @@ func GetTaxiTrips(db *sql.DB) {
 	fmt.Println("Received data from SODA REST API for Transportation-Network-Providers-Trips")
 
 	body_2, _ := ioutil.ReadAll(res_2.Body)
+	fmt.Println("Printing body 2")
 	var taxi_trips_list_2 TaxiTripsJsonRecords
 	json.Unmarshal(body_2, &taxi_trips_list_2)
 
