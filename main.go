@@ -280,58 +280,55 @@ func main() {
 	// Once you are done with protyping and unit-testing,
 	// you could port your code Cloud Run to  Compute Engine, App Engine, Kubernetes Engine, Google Functions, etc.
 	//
-	//for {
-	//
-	//	// While using Cloud Run for instrumenting/prototyping/debugging use the server
-	//	// to trace the state of you running data collection services
-	//	// Navigate to Cloud Run services and find the URL of your service
-	//	// An example of your services URL: https://go-microservice-23zzuv4hksp-uc.a.run.app
-	//	// Use the browser and navigate to your service URL to to kick-start your service
-	//
-	//	log.Print("starting CBI Microservices ...")
-	//
-	//	// Pull the data once a day
-	//	// You might need to pull Taxi Trips and COVID data on daily basis
-	//	// but not the unemployment dataset becasue its dataset doesn't change every day
-	//	// This code snippet is only for prototypying and unit-testing
-	//
-	//	// build and fine-tune the functions to pull data from the different data sources
-	//	// The following code snippets show you how to pull data from different data sources
-	//
-	//	//go GetCommunityAreaUnemployment(db)
-	//	//go GetBuildingPermits(db)
-	//	//go GetTaxiTrips(db)
-	//
-	//	//go GetCovidDetails(db)
-	//	//go GetCCVIDetails(db)
-	//
-	//	//go GetZipData(db)
-	//	//go GetNeighborhoodData(db)
-	//
-	//	http.HandleFunc("/", handler)
-	//
-	//	// Determine port for HTTP service.
-	//	port := os.Getenv("PORT")
-	//	if port == "" {
-	//		port = "8080"
-	//		log.Printf("defaulting to port %s", port)
-	//	}
-	//
-	//	// Start HTTP server.
-	//	log.Printf("listening on port %s", port)
-	//	log.Print("Navigate to Cloud Run services and find the URL of your service")
-	//	log.Print("Use the browser and navigate to your service URL to to check your service has started")
-	//
-	//	if err := http.ListenAndServe(":"+port, nil); err != nil {
-	//		log.Fatal(err)
-	//	}
-	//
-	//	time.Sleep(24 * time.Hour)
-	//}
-
 	for {
-		fmt.Println("Hello")
-		time.Sleep(30 * time.Second)
+
+		// While using Cloud Run for instrumenting/prototyping/debugging use the server
+		// to trace the state of you running data collection services
+		// Navigate to Cloud Run services and find the URL of your service
+		// An example of your services URL: https://go-microservice-23zzuv4hksp-uc.a.run.app
+		// Use the browser and navigate to your service URL to to kick-start your service
+
+		log.Print("starting CBI Microservices ...")
+
+		// Pull the data once a day
+		// You might need to pull Taxi Trips and COVID data on daily basis
+		// but not the unemployment dataset becasue its dataset doesn't change every day
+		// This code snippet is only for prototypying and unit-testing
+
+		// build and fine-tune the functions to pull data from the different data sources
+		// The following code snippets show you how to pull data from different data sources
+
+		go GetCommunityAreaUnemployment(db)
+		go GetBuildingPermits(db)
+		go GetTaxiTrips(db)
+
+		go GetCovidDetails(db)
+		go GetCCVIDetails(db)
+
+		go GetZipData(db)
+		go GetNeighborhoodData(db)
+
+		//go scheduleDataCollection(db)
+
+		http.HandleFunc("/", handler)
+
+		// Determine port for HTTP service.
+		port := os.Getenv("PORT")
+		if port == "" {
+			port = "8080"
+			log.Printf("defaulting to port %s", port)
+		}
+
+		// Start HTTP server.
+		log.Printf("listening on port %s", port)
+		log.Print("Navigate to Cloud Run services and find the URL of your service")
+		log.Print("Use the browser and navigate to your service URL to to check your service has started")
+
+		if err := http.ListenAndServe(":"+port, nil); err != nil {
+			log.Fatal(err)
+		}
+
+		time.Sleep(24 * time.Hour)
 	}
 
 }
@@ -621,7 +618,7 @@ func GetCommunityAreaUnemployment(db *sql.DB) {
 
 	// There are 77 known community areas in the data set
 	// So, set limit to 100.
-	var url = "https://data.cityofchicago.org/resource/iqnk-2tcu.json?$limit=100"
+	var url = "https://data.cityofchicago.org/resource/iqnk-2tcu.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -1471,7 +1468,7 @@ func GetZipData(db *sql.DB) {
 
 	fmt.Println("Created Table for zip_data")
 
-	var url = "https://data.cityofchicago.org/resource/unjd-c2ca.json?$limit=50"
+	var url = "https://data.cityofchicago.org/resource/unjd-c2ca.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -1551,7 +1548,7 @@ func GetNeighborhoodData(db *sql.DB) {
 
 	fmt.Println("Created Table for neighborhood_info")
 
-	var url = "https://data.cityofchicago.org/resource/y6yq-dbs2.json?$limit=50"
+	var url = "https://data.cityofchicago.org/resource/y6yq-dbs2.json?$limit=500"
 
 	tr := &http.Transport{
 		MaxIdleConns:       10,
@@ -1606,4 +1603,42 @@ func GetNeighborhoodData(db *sql.DB) {
 	}
 
 	fmt.Println("Completed Inserting Data into neighborhood table")
+}
+
+// for scheduling but not used
+func scheduleDataCollection(db *sql.DB) {
+	go func() {
+		for {
+			GetTaxiTrips(db)
+			time.Sleep(24 * time.Hour)
+		}
+	}()
+
+	go func() {
+		for {
+			GetCommunityAreaUnemployment(db)
+			time.Sleep(7 * 24 * time.Hour) // Only collect weekly
+		}
+	}()
+
+	go func() {
+		for {
+			GetBuildingPermits(db)
+			time.Sleep(24 * time.Hour)
+		}
+	}()
+
+	go func() {
+		for {
+			GetCovidDetails(db)
+			time.Sleep(24 * time.Hour)
+		}
+	}()
+
+	go func() {
+		for {
+			GetCCVIDetails(db)
+			time.Sleep(24 * time.Hour)
+		}
+	}()
 }
