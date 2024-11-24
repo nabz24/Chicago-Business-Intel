@@ -1251,6 +1251,7 @@ func GetCCVIDetails(db *sql.DB) {
 	fmt.Println("Received data from SODA REST API for Covid CCVI")
 
 	body, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(string(body))
 	var cciv_data_list CCVIJsonRecords
 	json.Unmarshal(body, &cciv_data_list)
 	fmt.Println(cciv_data_list)
