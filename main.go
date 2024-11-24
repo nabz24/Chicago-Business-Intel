@@ -956,11 +956,7 @@ func GetBuildingPermits(db *sql.DB) {
 			continue
 		}
 		suffix := building_data_list[i].Suffix
-		if suffix == "" {
-			fmt.Println("suffix")
-			co = co + 1
-			continue
-		}
+
 		work_description := building_data_list[i].Work_description
 		if work_description == "" {
 			fmt.Println("work_description")
@@ -1131,8 +1127,6 @@ func GetBuildingPermits(db *sql.DB) {
 			continue
 		}
 
-		fmt.Println(building_data_list[i])
-
 		sql := `INSERT INTO building_permits ("permit_id", "permit_code", "permit_type","review_type",
 		"application_start_date",
 		"issue_date",
@@ -1220,6 +1214,7 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 	}
+	fmt.Println('Count')
 	fmt.Println(co)
 	fmt.Println("Completed Inserting Rows into the Building Permits Table")
 }
