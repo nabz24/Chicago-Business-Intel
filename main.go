@@ -279,55 +279,55 @@ func main() {
 	// the microservices (goroutines) for data collection from the different sources
 	// Once you are done with protyping and unit-testing,
 	// you could port your code Cloud Run to  Compute Engine, App Engine, Kubernetes Engine, Google Functions, etc.
-
-	for {
-
-		// While using Cloud Run for instrumenting/prototyping/debugging use the server
-		// to trace the state of you running data collection services
-		// Navigate to Cloud Run services and find the URL of your service
-		// An example of your services URL: https://go-microservice-23zzuv4hksp-uc.a.run.app
-		// Use the browser and navigate to your service URL to to kick-start your service
-
-		log.Print("starting CBI Microservices ...")
-
-		// Pull the data once a day
-		// You might need to pull Taxi Trips and COVID data on daily basis
-		// but not the unemployment dataset becasue its dataset doesn't change every day
-		// This code snippet is only for prototypying and unit-testing
-
-		// build and fine-tune the functions to pull data from the different data sources
-		// The following code snippets show you how to pull data from different data sources
-
-		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		//go GetTaxiTrips(db)
-
-		//go GetCovidDetails(db)
-		//go GetCCVIDetails(db)
-
-		//go GetZipData(db)
-		//go GetNeighborhoodData(db)
-
-		http.HandleFunc("/", handler)
-
-		// Determine port for HTTP service.
-		port := os.Getenv("PORT")
-		if port == "" {
-			port = "8080"
-			log.Printf("defaulting to port %s", port)
-		}
-
-		// Start HTTP server.
-		log.Printf("listening on port %s", port)
-		log.Print("Navigate to Cloud Run services and find the URL of your service")
-		log.Print("Use the browser and navigate to your service URL to to check your service has started")
-
-		if err := http.ListenAndServe(":"+port, nil); err != nil {
-			log.Fatal(err)
-		}
-
-		time.Sleep(24 * time.Hour)
-	}
+	//
+	//for {
+	//
+	//	// While using Cloud Run for instrumenting/prototyping/debugging use the server
+	//	// to trace the state of you running data collection services
+	//	// Navigate to Cloud Run services and find the URL of your service
+	//	// An example of your services URL: https://go-microservice-23zzuv4hksp-uc.a.run.app
+	//	// Use the browser and navigate to your service URL to to kick-start your service
+	//
+	//	log.Print("starting CBI Microservices ...")
+	//
+	//	// Pull the data once a day
+	//	// You might need to pull Taxi Trips and COVID data on daily basis
+	//	// but not the unemployment dataset becasue its dataset doesn't change every day
+	//	// This code snippet is only for prototypying and unit-testing
+	//
+	//	// build and fine-tune the functions to pull data from the different data sources
+	//	// The following code snippets show you how to pull data from different data sources
+	//
+	//	//go GetCommunityAreaUnemployment(db)
+	//	//go GetBuildingPermits(db)
+	//	//go GetTaxiTrips(db)
+	//
+	//	//go GetCovidDetails(db)
+	//	//go GetCCVIDetails(db)
+	//
+	//	//go GetZipData(db)
+	//	//go GetNeighborhoodData(db)
+	//
+	//	http.HandleFunc("/", handler)
+	//
+	//	// Determine port for HTTP service.
+	//	port := os.Getenv("PORT")
+	//	if port == "" {
+	//		port = "8080"
+	//		log.Printf("defaulting to port %s", port)
+	//	}
+	//
+	//	// Start HTTP server.
+	//	log.Printf("listening on port %s", port)
+	//	log.Print("Navigate to Cloud Run services and find the URL of your service")
+	//	log.Print("Use the browser and navigate to your service URL to to check your service has started")
+	//
+	//	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	//		log.Fatal(err)
+	//	}
+	//
+	//	time.Sleep(24 * time.Hour)
+	//}
 
 	for {
 		fmt.Println("Hello")
