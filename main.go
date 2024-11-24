@@ -186,11 +186,21 @@ type CovidJsonRecords []struct {
 }
 
 type CCVIJsonRecords []struct {
-	Geography_type             string `json:"geography_type"`
-	Community_area_or_ZIP_code string `json:"community_area_or_zip"`
-	Community_name             string `json:"community_area_name"`
-	CCVI_score                 string `json:"ccvi_score"`
-	CCVI_category              string `json:"ccvi_category"`
+	Geography_type                        string `json:"geography_type"`
+	Community_area_or_ZIP_code            string `json:"community_area_or_zip"`
+	Community_name                        string `json:"community_area_name"`
+	CCVI_score                            string `json:"ccvi_score"`
+	CCVI_category                         string `json:"ccvi_category"`
+	rank_socioeconomic_status             string `json:"rank_socioeconomic_status"`
+	rank_household_composition            string `json:"rank_household_composition"`
+	rank_adults_no_pcp                    string `json:"rank_adults_no_pcp"`
+	rank_cumulative_mobility_ratio        string `json:"rank_cumulative_mobility_ratio"`
+	rank_frontline_essential_workers      string `json:"rank_frontline_essential_workers"`
+	rank_age_65_plus                      string `json:"rank_age_65_plus"`
+	rank_comorbid_conditions              string `json:"rank_comorbid_conditions"`
+	rank_covid_19_incidence_rate          string `json:"rank_covid_19_incidence_rate"`
+	rank_covid_19_hospital_admission_rate string `json:"rank_covid_19_hospital_admission_rate"`
+	rank_covid_19_crude_mortality_rate    string `json:"rank_covid_19_crude_mortality_rate"`
 }
 
 // Declare my database connection
@@ -274,10 +284,10 @@ func main() {
 
 		//go GetCommunityAreaUnemployment(db)
 		//go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
+		//go GetTaxiTrips(db)
 
 		// go GetCovidDetails(db)
-		// go GetCCVIDetails(db)
+		go GetCCVIDetails(db)
 
 		http.HandleFunc("/", handler)
 
@@ -1156,8 +1166,6 @@ func GetBuildingPermits(db *sql.DB) {
 
 func GetCovidDetails(db *sql.DB) {
 
-	fmt.Println("ADD-YOUR-CODE-HERE - To Implement GetCovidDetails")
-
 }
 
 // //////////////////////////////////////////////////////////////////////////////////
@@ -1192,6 +1200,123 @@ func GetCovidDetails(db *sql.DB) {
 // //////////////////////////////////////////////////////////////////////////////////
 // //////////////////////////////////////////////////////////////////////////////////
 func GetCCVIDetails(db *sql.DB) {
+
+	drop_table := `drop table if exists building_permits`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "covid_ccvi" (
+						"id"   SERIAL , 
+						"geography_type" VARCHAR(255), 
+						"community_area_or_zip" VARCHAR(255), 
+						"community_area_name" VARCHAR(255),  
+						"ccvi_score"      VARCHAR(255), 
+						"ccvi_category"      VARCHAR(255), 
+						"rank_socioeconomic_status"      VARCHAR(255), 
+						"rank_household_composition"      VARCHAR(255), 
+						"rank_adults_no_pcp"      VARCHAR(255), 
+						"rank_cumulative_mobility_ratio"      VARCHAR(255), 
+						"rank_frontline_essential_workers"      VARCHAR(255), 
+						"rank_age_65_plus"      VARCHAR(255), 
+						"rank_comorbid_conditions"    VARCHAR(255), 
+						"rank_covid_19_incidence_rate"      VARCHAR(255), 
+						"rank_covid_19_hospital_admission_rate"      VARCHAR(255), 
+						"rank_covid_19_crude_mortality_rate"      VARCHAR(255)
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for covid_ccvi")
+
+	var url = "https://data.cityofchicago.org/resource/xhc6-88s9.json?$limit=500"
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for Covid CCVI")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var cciv_data_list CCVIJsonRecords
+	json.Unmarshal(body, &cciv_data_list)
+
+	s := fmt.Sprintf("\n\n Building Permits: number of SODA records received = %d\n\n", len(cciv_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(cciv_data_list); i++ {
+
+		geography_type := cciv_data_list[i].Geography_type
+		community_area_or_zip := cciv_data_list[i].Community_area_or_ZIP_code
+		community_area_name := cciv_data_list[i].Community_name
+		ccvi_score := cciv_data_list[i].CCVI_score
+		ccvi_category := cciv_data_list[i].CCVI_category
+		rank_socioeconomic_status := cciv_data_list[i].rank_socioeconomic_status
+		rank_household_composition := cciv_data_list[i].rank_household_composition
+		rank_adults_no_pcp := cciv_data_list[i].rank_adults_no_pcp
+		rank_cumulative_mobility_ratio := cciv_data_list[i].rank_cumulative_mobility_ratio
+		rank_frontline_essential_workers := cciv_data_list[i].rank_frontline_essential_workers
+		rank_age_65_plus := cciv_data_list[i].rank_age_65_plus
+		rank_comorbid_conditions := cciv_data_list[i].rank_comorbid_conditions
+		rank_covid_19_incidence_rate := cciv_data_list[i].rank_covid_19_incidence_rate
+		rank_covid_19_hospital_admission_rate := cciv_data_list[i].rank_covid_19_hospital_admission_rate
+		rank_covid_19_crude_mortality_rate := cciv_data_list[i].rank_covid_19_crude_mortality_rate
+
+		sql := `INSERT INTO building_permits ( 
+	"geography_type",
+	"community_area_or_zip",
+	"community_area_name",
+	"ccvi_score",
+	"ccvi_category",
+	"rank_socioeconomic_status",
+	"rank_household_composition",
+	"rank_adults_no_pcp",
+	"rank_cumulative_mobility_ratio",
+	"rank_frontline_essential_workers",
+	"rank_age_65_plus",
+	"rank_comorbid_conditions",
+	"rank_covid_19_incidence_rate",
+	"rank_covid_19_hospital_admission_rate",
+	"rank_covid_19_crude_mortality_rate"
+	)
+	values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15)`
+
+		_, err = db.Exec(
+			sql,
+			geography_type,
+			community_area_or_zip,
+			community_area_name,
+			ccvi_score,
+			ccvi_category,
+			rank_socioeconomic_status,
+			rank_household_composition,
+			rank_adults_no_pcp,
+			rank_cumulative_mobility_ratio,
+			rank_frontline_essential_workers,
+			rank_age_65_plus,
+			rank_comorbid_conditions,
+			rank_covid_19_incidence_rate,
+			rank_covid_19_hospital_admission_rate,
+			rank_covid_19_crude_mortality_rate)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
 
 	fmt.Println("ADD-YOUR-CODE-HERE - To Implement GetCCVIDetails")
 
