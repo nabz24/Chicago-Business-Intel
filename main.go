@@ -858,7 +858,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	// While doing unit-testing keep the limit value to 500
 	// later you could change it to 1000, 2000, 10,000, etc.
-	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=500"
+	var url = "https://data.cityofchicago.org/resource/building-permits.json?$limit=1000"
 
 	tr := &http.Transport{
 		MaxIdleConns:          10,
@@ -890,7 +890,8 @@ func GetBuildingPermits(db *sql.DB) {
 	io.WriteString(os.Stdout, s)
 
 	for i := 0; i < len(building_data_list); i++ {
-
+		fmt.Println("hello")
+		fmt.Println(building_data_list[i])
 		// We will execute defensive coding to check for messy/dirty/missing data values
 		// There are different methods to deal with messy/dirty/missing data.
 		// We will use the simplest method: drop records that have messy/dirty/missing data
