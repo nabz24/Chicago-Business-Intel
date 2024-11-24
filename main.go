@@ -884,7 +884,7 @@ func GetBuildingPermits(db *sql.DB) {
 
 	co := 0
 	for i := 0; i < len(building_data_list); i++ {
-		fmt.Println(building_data_list[i])
+
 		// We will execute defensive coding to check for messy/dirty/missing data values
 		// There are different methods to deal with messy/dirty/missing data.
 		// We will use the simplest method: drop records that have messy/dirty/missing data
@@ -1085,11 +1085,6 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		pin1 := building_data_list[i].Pin1
-		if pin1 == "" {
-			fmt.Println("p")
-			co = co + 1
-			continue
-		}
 
 		pin2 := building_data_list[i].Pin2
 
