@@ -1201,7 +1201,7 @@ func GetCovidDetails(db *sql.DB) {
 // //////////////////////////////////////////////////////////////////////////////////
 func GetCCVIDetails(db *sql.DB) {
 
-	drop_table := `drop table if exists building_permits`
+	drop_table := `drop table if exists covid_ccvi`
 	_, err := db.Exec(drop_table)
 	if err != nil {
 		panic(err)
@@ -1254,7 +1254,7 @@ func GetCCVIDetails(db *sql.DB) {
 	var cciv_data_list CCVIJsonRecords
 	json.Unmarshal(body, &cciv_data_list)
 
-	s := fmt.Sprintf("\n\n Building Permits: number of SODA records received = %d\n\n", len(cciv_data_list))
+	s := fmt.Sprintf("\n\n Covid CCVI: number of SODA records received = %d\n\n", len(cciv_data_list))
 	io.WriteString(os.Stdout, s)
 
 	for i := 0; i < len(cciv_data_list); i++ {
@@ -1275,7 +1275,7 @@ func GetCCVIDetails(db *sql.DB) {
 		rank_covid_19_hospital_admission_rate := cciv_data_list[i].rank_covid_19_hospital_admission_rate
 		rank_covid_19_crude_mortality_rate := cciv_data_list[i].rank_covid_19_crude_mortality_rate
 
-		sql := `INSERT INTO building_permits ( 
+		sql := `INSERT INTO covid_ccvi ( 
 	"geography_type",
 	"community_area_or_zip",
 	"community_area_name",
@@ -1318,6 +1318,6 @@ func GetCCVIDetails(db *sql.DB) {
 
 	}
 
-	fmt.Println("ADD-YOUR-CODE-HERE - To Implement GetCCVIDetails")
+	fmt.Println("Completed Inserting Data into covid_ccvi table")
 
 }
