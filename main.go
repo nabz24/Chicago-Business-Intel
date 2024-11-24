@@ -286,8 +286,8 @@ func main() {
 		//go GetBuildingPermits(db)
 		//go GetTaxiTrips(db)
 
-		// go GetCovidDetails(db)
-		go GetCCVIDetails(db)
+		go GetCovidDetails(db)
+		//go GetCCVIDetails(db)
 
 		http.HandleFunc("/", handler)
 
@@ -1165,6 +1165,108 @@ func GetBuildingPermits(db *sql.DB) {
 ////////////////////////////////////////////////////////////////////////////////////
 
 func GetCovidDetails(db *sql.DB) {
+
+	drop_table := `drop table if exists weekly_covid_metric`
+	_, err := db.Exec(drop_table)
+	if err != nil {
+		panic(err)
+	}
+
+	create_table := `CREATE TABLE IF NOT EXISTS "weekly_covid_metric" (
+						"id"   SERIAL , 
+						"zip_code" VARCHAR(255), 
+						"week_number" VARCHAR(255), 
+						"week_start" VARCHAR(255),  
+						"week_end"      VARCHAR(255), 
+						"cases_weekly"      VARCHAR(255), 
+						"cases_cumulative"      VARCHAR(255), 
+						"case_rate_weekly"      VARCHAR(255), 
+						"case_rate_cumulative"      VARCHAR(255), 
+						"percent_tested_positive_weekly"      VARCHAR(255), 
+						"percent_tested_positive_cumulative"      VARCHAR(255), 
+						"population"    VARCHAR(255)
+					);`
+
+	_, _err := db.Exec(create_table)
+	if _err != nil {
+		panic(_err)
+	}
+
+	fmt.Println("Created Table for weekly_covid_metrics")
+
+	var url = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?$limit=500"
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for covid_weekly_metrics")
+
+	body, _ := ioutil.ReadAll(res.Body)
+	var covid_weekly_data_list CovidJsonRecords
+	json.Unmarshal(body, &covid_weekly_data_list)
+	s := fmt.Sprintf("\n\n Weekly covid metrics: number of SODA records received = %d\n\n", len(covid_weekly_data_list))
+	io.WriteString(os.Stdout, s)
+
+	for i := 0; i < len(covid_weekly_data_list); i++ {
+
+		zip_code := covid_weekly_data_list[i].Zip_code
+		week_number := covid_weekly_data_list[i].Week_number
+		week_start := covid_weekly_data_list[i].Week_start
+		week_end := covid_weekly_data_list[i].Week_end
+		cases_weekly := covid_weekly_data_list[i].Cases_weekly
+		cases_cumulative := covid_weekly_data_list[i].Cases_cumulative
+		case_rate_weekly := covid_weekly_data_list[i].Cases_weekly
+		case_rate_cumulative := covid_weekly_data_list[i].Cases_cumulative
+		percent_tested_positive_weekly := covid_weekly_data_list[i].Percent_tested_positive_weekly
+		percent_tested_positive_cumulative := covid_weekly_data_list[i].Percent_tested_positive_cumulative
+		population := covid_weekly_data_list[i].Population
+
+		sql := `INSERT INTO weekly_covid_metric ( 
+						"zip_code", 
+						"week_number", 
+						"week_start",  
+						"week_end", 
+						"cases_weekly", 
+						"cases_cumulative", 
+						"case_rate_weekly", 
+						"case_rate_cumulative", 
+						"percent_tested_positive_weekly", 
+						"percent_tested_positive_cumulative", 
+						"population"
+	)
+	values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11)`
+
+		_, err = db.Exec(
+			sql,
+			zip_code,
+			week_number,
+			week_start,
+			week_end,
+			cases_weekly,
+			cases_cumulative,
+			case_rate_weekly,
+			case_rate_cumulative,
+			percent_tested_positive_weekly,
+			percent_tested_positive_cumulative,
+			population)
+
+		if err != nil {
+			panic(err)
+		}
+
+	}
+
+	fmt.Println("Completed Inserting Data into weekly_covid_metrics table")
 
 }
 
