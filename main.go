@@ -482,7 +482,7 @@ func GetTaxiTrips(db *sql.DB) {
 			Longitude: pickup_centroid_longitude_float,
 		}
 
-		// Comment the following line while not unit-testing
+		// Comment the following line while not unit-testing t
 		fmt.Println(pickup_location)
 
 		pickup_address_list, _ := geocoder.GeocodingReverse(pickup_location)
