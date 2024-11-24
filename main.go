@@ -191,16 +191,16 @@ type CCVIJsonRecords []struct {
 	Community_name                        string `json:"community_area_name"`
 	CCVI_score                            string `json:"ccvi_score"`
 	CCVI_category                         string `json:"ccvi_category"`
-	rank_socioeconomic_status             string `json:"rank_socioeconomic_status"`
-	rank_household_composition            string `json:"rank_household_composition"`
-	rank_adults_no_pcp                    string `json:"rank_adults_no_pcp"`
-	rank_cumulative_mobility_ratio        string `json:"rank_cumulative_mobility_ratio"`
-	rank_frontline_essential_workers      string `json:"rank_frontline_essential_workers"`
-	rank_age_65_plus                      string `json:"rank_age_65_plus"`
-	rank_comorbid_conditions              string `json:"rank_comorbid_conditions"`
-	rank_covid_19_incidence_rate          string `json:"rank_covid_19_incidence_rate"`
-	rank_covid_19_hospital_admission_rate string `json:"rank_covid_19_hospital_admission_rate"`
-	rank_covid_19_crude_mortality_rate    string `json:"rank_covid_19_crude_mortality_rate"`
+	Rank_socioeconomic_status             string `json:"rank_socioeconomic_status"`
+	Rank_household_composition            string `json:"rank_household_composition"`
+	Rank_adults_no_pcp                    string `json:"rank_adults_no_pcp"`
+	Rank_cumulative_mobility_ratio        string `json:"rank_cumulative_mobility_ratio"`
+	Rank_frontline_essential_workers      string `json:"rank_frontline_essential_workers"`
+	Rank_age_65_plus                      string `json:"rank_age_65_plus"`
+	Rank_comorbid_conditions              string `json:"rank_comorbid_conditions"`
+	Rank_covid_19_incidence_rate          string `json:"rank_covid_19_incidence_rate"`
+	Rank_covid_19_hospital_admission_rate string `json:"rank_covid_19_hospital_admission_rate"`
+	Rank_covid_19_crude_mortality_rate    string `json:"rank_covid_19_crude_mortality_rate"`
 }
 
 // Declare my database connection
@@ -1251,10 +1251,8 @@ func GetCCVIDetails(db *sql.DB) {
 	fmt.Println("Received data from SODA REST API for Covid CCVI")
 
 	body, _ := ioutil.ReadAll(res.Body)
-	fmt.Println(string(body))
 	var cciv_data_list CCVIJsonRecords
 	json.Unmarshal(body, &cciv_data_list)
-	fmt.Println(cciv_data_list)
 	s := fmt.Sprintf("\n\n Covid CCVI: number of SODA records received = %d\n\n", len(cciv_data_list))
 	io.WriteString(os.Stdout, s)
 
@@ -1265,16 +1263,16 @@ func GetCCVIDetails(db *sql.DB) {
 		community_area_name := cciv_data_list[i].Community_name
 		ccvi_score := cciv_data_list[i].CCVI_score
 		ccvi_category := cciv_data_list[i].CCVI_category
-		rank_socioeconomic_status := cciv_data_list[i].rank_socioeconomic_status
-		rank_household_composition := cciv_data_list[i].rank_household_composition
-		rank_adults_no_pcp := cciv_data_list[i].rank_adults_no_pcp
-		rank_cumulative_mobility_ratio := cciv_data_list[i].rank_cumulative_mobility_ratio
-		rank_frontline_essential_workers := cciv_data_list[i].rank_frontline_essential_workers
-		rank_age_65_plus := cciv_data_list[i].rank_age_65_plus
-		rank_comorbid_conditions := cciv_data_list[i].rank_comorbid_conditions
-		rank_covid_19_incidence_rate := cciv_data_list[i].rank_covid_19_incidence_rate
-		rank_covid_19_hospital_admission_rate := cciv_data_list[i].rank_covid_19_hospital_admission_rate
-		rank_covid_19_crude_mortality_rate := cciv_data_list[i].rank_covid_19_crude_mortality_rate
+		rank_socioeconomic_status := cciv_data_list[i].Rank_socioeconomic_status
+		rank_household_composition := cciv_data_list[i].Rank_household_composition
+		rank_adults_no_pcp := cciv_data_list[i].Rank_adults_no_pcp
+		rank_cumulative_mobility_ratio := cciv_data_list[i].Rank_cumulative_mobility_ratio
+		rank_frontline_essential_workers := cciv_data_list[i].Rank_frontline_essential_workers
+		rank_age_65_plus := cciv_data_list[i].Rank_age_65_plus
+		rank_comorbid_conditions := cciv_data_list[i].Rank_comorbid_conditions
+		rank_covid_19_incidence_rate := cciv_data_list[i].Rank_covid_19_incidence_rate
+		rank_covid_19_hospital_admission_rate := cciv_data_list[i].Rank_covid_19_hospital_admission_rate
+		rank_covid_19_crude_mortality_rate := cciv_data_list[i].Rank_covid_19_crude_mortality_rate
 
 		sql := `INSERT INTO covid_ccvi ( 
 	"geography_type",
