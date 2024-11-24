@@ -286,8 +286,10 @@ func main() {
 		//go GetBuildingPermits(db)
 		//go GetTaxiTrips(db)
 
-		go GetCovidDetails(db)
+		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
+
+		go GetNeighborhood(db)
 
 		http.HandleFunc("/", handler)
 
@@ -1421,4 +1423,26 @@ func GetCCVIDetails(db *sql.DB) {
 
 	fmt.Println("Completed Inserting Data into covid_ccvi table")
 
+}
+
+func GetNeighborhood(db *sql.DB) {
+
+	var url = "https://data.cityofchicago.org/api/views/y6yq-dbs2/rows.json?accessType=DOWNLOAD"
+
+	tr := &http.Transport{
+		MaxIdleConns:       10,
+		IdleConnTimeout:    300 * time.Second,
+		DisableCompression: true,
+	}
+
+	client := &http.Client{Transport: tr}
+
+	res, err := client.Get(url)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Received data from SODA REST API for Covid CCVI")
+	fmt.Println(res)
+	//body, _ := ioutil.ReadAll(res.Body)
 }
