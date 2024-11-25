@@ -298,15 +298,15 @@ func main() {
 		// build and fine-tune the functions to pull data from the different data sources
 		// The following code snippets show you how to pull data from different data sources
 
-		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
+		go GetCommunityAreaUnemployment(db)
+		go GetBuildingPermits(db)
+		//go GetTaxiTrips(db)
 
-		//go GetCovidDetails(db)
-		//go GetCCVIDetails(db)
+		go GetCovidDetails(db)
+		go GetCCVIDetails(db)
 
-		//go GetZipData(db)
-		//go GetNeighborhoodData(db)
+		go GetZipData(db)
+		go GetNeighborhoodData(db)
 
 		//go scheduleDataCollection(db)
 
