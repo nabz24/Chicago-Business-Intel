@@ -299,8 +299,8 @@ func main() {
 		// The following code snippets show you how to pull data from different data sources
 
 		//go GetCommunityAreaUnemployment(db)
-		//go GetBuildingPermits(db)
-		go GetTaxiTrips(db)
+		go GetBuildingPermits(db)
+		//go GetTaxiTrips(db)
 
 		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
