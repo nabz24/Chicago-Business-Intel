@@ -892,28 +892,24 @@ func GetBuildingPermits(db *sql.DB) {
 
 		permit_id := building_data_list[i].Id
 		if permit_id == "" {
-			fmt.Println("Permit_id")
 			co = co + 1
 			continue
 		}
 
 		permit_code := building_data_list[i].Permit_Code
 		if permit_code == "" {
-			fmt.Println("permit_code")
 			co = co + 1
 			continue
 		}
 
 		permit_type := building_data_list[i].Permit_type
 		if permit_type == "" {
-			fmt.Println("permit_type")
 			co = co + 1
 			continue
 		}
 
 		review_type := building_data_list[i].Review_type
 		if review_type == "" {
-			fmt.Println("review_type")
 			co = co + 1
 			continue
 		}
@@ -922,32 +918,27 @@ func GetBuildingPermits(db *sql.DB) {
 
 		issue_date := building_data_list[i].Issue_date
 		if issue_date == "" {
-			fmt.Println("issue_date")
 			co = co + 1
 			continue
 		}
 		processing_time := building_data_list[i].Processing_time
 		if processing_time == "" {
-			fmt.Println("processing_time")
 			co = co + 1
 			continue
 		}
 
 		street_number := building_data_list[i].Street_number
 		if street_number == "" {
-			fmt.Println("street_number ")
 			co = co + 1
 			continue
 		}
 		street_direction := building_data_list[i].Street_direction
 		if street_direction == "" {
-			fmt.Println("street_direction")
 			co = co + 1
 			continue
 		}
 		street_name := building_data_list[i].Street_name
 		if street_name == "" {
-			fmt.Println("street_name ")
 			co = co + 1
 			continue
 		}
@@ -957,80 +948,67 @@ func GetBuildingPermits(db *sql.DB) {
 
 		building_fee_paid := building_data_list[i].Building_fee_paid
 		if building_fee_paid == "" {
-			fmt.Println("building_fee_paid")
 			co = co + 1
 			continue
 		}
 		zoning_fee_paid := building_data_list[i].Zoning_fee_paid
 		if zoning_fee_paid == "" {
-			fmt.Println("zoning_fee_paid")
 			co = co + 1
 			continue
 		}
 		other_fee_paid := building_data_list[i].Other_fee_paid
 		if other_fee_paid == "" {
-			fmt.Println("other_fee_paid ")
 			co = co + 1
 			continue
 		}
 		subtotal_paid := building_data_list[i].Subtotal_paid
 		if subtotal_paid == "" {
-			fmt.Println("subtotal_paid")
 			co = co + 1
 			continue
 		}
 		building_fee_unpaid := building_data_list[i].Building_fee_unpaid
 		if building_fee_unpaid == "" {
-			fmt.Println("building_fee_unpaid")
 			co = co + 1
 			continue
 		}
 		zoning_fee_unpaid := building_data_list[i].Zoning_fee_unpaid
 		if zoning_fee_unpaid == "" {
-			fmt.Println("zoning_fee_unpaid")
 			co = co + 1
 			continue
 		}
 		other_fee_unpaid := building_data_list[i].Other_fee_unpaid
 		if other_fee_unpaid == "" {
-			fmt.Println("other_fee_unpaid")
 			co = co + 1
 			continue
 		}
 		subtotal_unpaid := building_data_list[i].Subtotal_unpaid
 		if subtotal_unpaid == "" {
-			fmt.Println("subtotal_unpaid")
 			co = co + 1
 			continue
 		}
 		building_fee_waived := building_data_list[i].Building_fee_waived
 		if building_fee_waived == "" {
-			fmt.Println("building_fee_waived")
 			co = co + 1
 			continue
 		}
 		zoning_fee_waived := building_data_list[i].Zoning_fee_waived
 		if zoning_fee_waived == "" {
-			fmt.Println("zoning_fee_waived")
 			co = co + 1
 			continue
 		}
 		other_fee_waived := building_data_list[i].Other_fee_waived
 		if other_fee_waived == "" {
-			fmt.Println("other_fee_waived")
 			co = co + 1
 			continue
 		}
 
 		subtotal_waived := building_data_list[i].Subtotal_waived
 		if subtotal_waived == "" {
-			fmt.Println("subtotal_waived")
 			co = co + 1
 			continue
 		}
 		total_fee := building_data_list[i].Total_fee
 		if total_fee == "" {
-			fmt.Println("total_fee")
 			co = co + 1
 			continue
 		}
@@ -1038,26 +1016,15 @@ func GetBuildingPermits(db *sql.DB) {
 		contact_1_type := building_data_list[i].Contact_1_type
 
 		contact_1_name := building_data_list[i].Contact_1_name
-		if contact_1_name == "" {
-			fmt.Println("contact_1_name")
-			co = co + 1
-			continue
-		}
 
 		contact_1_city := building_data_list[i].Contact_1_city
 
 		contact_1_state := building_data_list[i].Contact_1_state
-		if contact_1_state == "" {
-			fmt.Println("cons")
-			co = co + 1
-			continue
-		}
 
 		contact_1_zipcode := building_data_list[i].Contact_1_zipcode
 
 		reported_cost := building_data_list[i].Reported_cost
 		if reported_cost == "" {
-			fmt.Println("re")
 			co = co + 1
 			continue
 		}
@@ -1071,11 +1038,6 @@ func GetBuildingPermits(db *sql.DB) {
 		census_tract := building_data_list[i].Census_tract
 
 		ward := building_data_list[i].Ward
-		if ward == "" {
-			fmt.Println("wa")
-			co = co + 1
-			continue
-		}
 
 		xcoordinate := building_data_list[i].Xcoordinate
 
@@ -1084,11 +1046,6 @@ func GetBuildingPermits(db *sql.DB) {
 		latitude := building_data_list[i].Latitude
 
 		longitude := building_data_list[i].Longitude
-		if longitude == "" {
-			fmt.Println("longitude")
-			co = co + 1
-			continue
-		}
 
 		sql := `INSERT INTO building_permits ("permit_id", "permit_code", "permit_type","review_type",
 		"application_start_date",
