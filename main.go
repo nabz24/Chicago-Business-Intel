@@ -299,8 +299,8 @@ func main() {
 		// The following code snippets show you how to pull data from different data sources
 
 		//go GetCommunityAreaUnemployment(db)
-		go GetBuildingPermits(db)
-		//go GetTaxiTrips(db)
+		//go GetBuildingPermits(db)
+		go GetTaxiTrips(db)
 
 		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
@@ -842,10 +842,10 @@ func GetBuildingPermits(db *sql.DB) {
 						"community_area"      VARCHAR(255), 
 						"census_tract"      VARCHAR(255), 
 						"ward"      VARCHAR(255), 
-						"xcoordinate"      DOUBLE PRECISION ,
-						"ycoordinate"      DOUBLE PRECISION ,
-						"latitude"      DOUBLE PRECISION ,
-						"longitude"      DOUBLE PRECISION,
+						"xcoordinate"      VARCHAR(255) ,
+						"ycoordinate"      VARCHAR(255) ,
+						"latitude"      VARCHAR(255) ,
+						"longitude"      VARCHAR(255),
 						PRIMARY KEY ("id") 
 					);`
 
