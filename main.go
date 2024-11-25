@@ -919,11 +919,7 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		application_start_date := building_data_list[i].Application_start_date
-		if application_start_date == "" {
-			fmt.Println("application_start_date")
-			co = co + 1
-			continue
-		}
+
 		issue_date := building_data_list[i].Issue_date
 		if issue_date == "" {
 			fmt.Println("issue_date")
@@ -958,11 +954,7 @@ func GetBuildingPermits(db *sql.DB) {
 		suffix := building_data_list[i].Suffix
 
 		work_description := building_data_list[i].Work_description
-		if work_description == "" {
-			fmt.Println("work_description")
-			co = co + 1
-			continue
-		}
+
 		building_fee_paid := building_data_list[i].Building_fee_paid
 		if building_fee_paid == "" {
 			fmt.Println("building_fee_paid")
@@ -1044,11 +1036,6 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		contact_1_type := building_data_list[i].Contact_1_type
-		if contact_1_type == "" {
-			fmt.Println("contact_1_type")
-			co = co + 1
-			continue
-		}
 
 		contact_1_name := building_data_list[i].Contact_1_name
 		if contact_1_name == "" {
@@ -1058,11 +1045,7 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		contact_1_city := building_data_list[i].Contact_1_city
-		if contact_1_city == "" {
-			fmt.Println("contact_1_city ")
-			co = co + 1
-			continue
-		}
+
 		contact_1_state := building_data_list[i].Contact_1_state
 		if contact_1_state == "" {
 			fmt.Println("cons")
@@ -1071,11 +1054,6 @@ func GetBuildingPermits(db *sql.DB) {
 		}
 
 		contact_1_zipcode := building_data_list[i].Contact_1_zipcode
-		if contact_1_zipcode == "" {
-			fmt.Println("conp")
-			co = co + 1
-			continue
-		}
 
 		reported_cost := building_data_list[i].Reported_cost
 		if reported_cost == "" {
@@ -1091,11 +1069,6 @@ func GetBuildingPermits(db *sql.DB) {
 		community_area := building_data_list[i].Community_area
 
 		census_tract := building_data_list[i].Census_tract
-		if census_tract == "" {
-			fmt.Println("c")
-			co = co + 1
-			continue
-		}
 
 		ward := building_data_list[i].Ward
 		if ward == "" {
@@ -1109,11 +1082,6 @@ func GetBuildingPermits(db *sql.DB) {
 		ycoordinate := building_data_list[i].Ycoordinate
 
 		latitude := building_data_list[i].Latitude
-		if latitude == "" {
-			fmt.Println("lat")
-			co = co + 1
-			continue
-		}
 
 		longitude := building_data_list[i].Longitude
 		if longitude == "" {
