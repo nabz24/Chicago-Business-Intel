@@ -1044,8 +1044,16 @@ func GetBuildingPermits(db *sql.DB) {
 		ycoordinate := building_data_list[i].Ycoordinate
 
 		latitude := building_data_list[i].Latitude
+		if latitude == "" {
+			co = co + 1
+			continue
+		}
 
 		longitude := building_data_list[i].Longitude
+		if latitude == "" {
+			co = co + 1
+			continue
+		}
 
 		sql := `INSERT INTO building_permits ("permit_id", "permit_code", "permit_type","review_type",
 		"application_start_date",
