@@ -304,7 +304,7 @@ func main() {
 
 		//go GetCovidDetails(db)
 		//go GetCCVIDetails(db)
-
+		//test
 		//go GetZipData(db)
 		//go GetNeighborhoodData(db)
 
