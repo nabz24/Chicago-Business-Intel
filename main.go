@@ -300,10 +300,10 @@ func main() {
 
 		//go GetCommunityAreaUnemployment(db)
 		//go GetBuildingPermits(db)
-		//go GetTaxiTrips(db)
+		go GetTaxiTrips(db)
 
 		//go GetCovidDetails(db)
-		go GetCCVIDetails(db)
+		//go GetCCVIDetails(db)
 
 		//go GetZipData(db)
 		//go GetNeighborhoodData(db)
@@ -328,7 +328,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		time.Sleep(24 * time.Hour)
+		//time.Sleep(24 * time.Hour)
 	}
 
 }
